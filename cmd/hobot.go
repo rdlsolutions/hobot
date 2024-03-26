@@ -18,7 +18,6 @@ var (
 )
 
 // hobotCmd represents the hobot command
-//6995464540:AAHeqkxVvIg4XLNXCfBYDFAgKx0T1gNFtx8
 var hobotCmd = &cobra.Command{
 	Use:   "hobot",
 	Aliases: []string{"start"},
