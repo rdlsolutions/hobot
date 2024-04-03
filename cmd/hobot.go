@@ -19,9 +19,9 @@ var (
 
 // hobotCmd represents the hobot command
 var hobotCmd = &cobra.Command{
-	Use:   "hobot",
+	Use:     "hobot",
 	Aliases: []string{"start"},
-	Short: "A brief description of your command",
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -46,7 +46,7 @@ to quickly create a Cobra application.`,
 		hobot.Handle(telebot.OnText, func(m telebot.Context) error {
 
 			log.Print(m.Message().Payload, m.Text())
-			payload :=m.Message().Payload
+			payload := m.Message().Payload
 
 			switch payload {
 			case "hello":
