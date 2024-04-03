@@ -1,6 +1,6 @@
 module github.com/rdlsolutions/hobot
 
-go 1.21.5
+go 1.23
 
 require (
 	github.com/spf13/cobra v1.8.0
