@@ -13,7 +13,7 @@ lint:
 test:
 	go test -v
 
-get:
+get:ma
 	go get
 
 build: format get
