@@ -6,10 +6,8 @@ replicaCount: 1
 
 image:
   repository: rdlsolutions
-  # Overrides the image tag whose default is the chart appVersion.
-  # echo $(git describe --tags --abbrev=0)-$(git rev-parse --short HEAD)
   tag: "v1.0.7-5e33519"
-
+  arch: amd64
 secret:
   name: "hobot"
   env: "TELE_TOKEN"
