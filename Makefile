@@ -1,7 +1,8 @@
 APP := $(shell basename $(shell git remote get-url origin))
 REGISTRY := ghcr.io/rdlsolutions
 VERSION=$(shell git describe --tags --abbrev=0 --tags)-$(shell git rev-parse --short HEAD)
-TARGETOS=linux	#linux darwin windows
+TARGETOS=linux
+#linux darwin windows
 TARGETARCH=amd64 #amd64 arm64 
 
 format:
