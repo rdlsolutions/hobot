@@ -3,10 +3,9 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
 image:
   repository: rdlsolutions/hobot
-  tag: "v1.0.9-5e22e32"
+  tag: "v1.0.9-90d99a3"
   arch: amd64
 secret:
   name: "hobot"
