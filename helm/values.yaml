@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   registry: "ghcr.io"
   repository: rdlsolutions/hobot
-  tag: $(git describe --tags --abbrev=0)-$(git rev-parse --short HEAD)
+  tag: v1.0.9-5093656
   arch: amd64
   os: linux
 secret:
