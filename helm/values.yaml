@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: rdlsolutions/hobot
-  tag: "v1.0.9-401eda6"
+  tag: "v1.0.9-5e22e32"
   arch: amd64
 secret:
   name: "hobot"
