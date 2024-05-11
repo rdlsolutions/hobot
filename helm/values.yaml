@@ -4,9 +4,11 @@
 
 replicaCount: 1
 image:
+  registry: "ghcr.io"
   repository: rdlsolutions/hobot
   tag: "v1.0.9-545f450"
-  arch: amd64
+  arch: "amd64"
+  os: linux
 secret:
   name: "hobot"
   env: "TELE_TOKEN"
