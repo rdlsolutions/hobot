@@ -1,0 +1,17 @@
+# Default values for helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+image:
+  registry: "ghcr.io"
+  repository: rdlsolutions/hobot
+  tag: v1.0.9-5093656
+  arch: amd64
+  os: linux
+secret:
+  name: "hobot"
+  env: "TELE_TOKEN"
+  key: "token"
+securityContext:
+  privileged: true
