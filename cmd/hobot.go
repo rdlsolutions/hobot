@@ -4,18 +4,58 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"context"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
 	"github.com/spf13/cobra"
+
+	"github.com/hirosassa/zerodriver"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
+	sdkmetric 	"go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/resource"	
+	semconv 	"go.opentelemetry.io/otel/semconv/v1.12.0"
 	telebot "gopkg.in/telebot.v3"
 )
 
 var (
 	TeleToken = os.Getenv("TELE_TOKEN")
+	MetricHost = os.Getenv("METRIC_HOST")
 )
+
+func initMetrics(ctx context.Context) {
+
+	exporter, _ :=otlpmetricgrpc.New(
+		ctx,
+		otlpmetricgrpc.WithEndpoint{MetricHost},
+		otlpmetricgrpc.WithInsecure(),	
+	)
+
+	resource := resource.NewWithAttributes(
+		semconv.SchemaURL,
+		semconv.ServiceNameKey.String(fmt.Sprintf("hobot_%", appVersion)),
+	)
+
+	mp := sdkmetric.NewMeterProvider(
+		sdkmetric.WithResource(resource),
+		sdkmetric.WithReader(
+			sdkmetric.NewPeriodicReader(exporter, sdkmetric.WithInterval(10*time.Second)),
+		),
+	)
+
+	otel.SetMeterProvider(mp)
+}
+
+func pmetrics(ctx context.Context, payload string){
+
+	meter := otel.GetMeterProvider().Meter("hobot_ligth_signal_counter")
+
+	counter, _ := meter.Int64Counter(fmt.Sprintf("hobot_ligth_signal_%s", payload))
+
+	counter.Add(ctx, 1)
+}
 
 // hobotCmd represents the hobot command
 var hobotCmd = &cobra.Command{
@@ -29,8 +69,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		fmt.Printf("hobot %s started", appVersion)
+		logger := zerodriver.NewProductionLogger()		
+	//	fmt.Printf("hobot %s started", appVersion)
 
 		hobot, err := telebot.NewBot(telebot.Settings{
 			URL:    "",
@@ -39,27 +79,60 @@ to quickly create a Cobra application.`,
 		})
 
 		if err != nil {
-			log.Fatalf("Please check TELE_TOKEN env variablee. %s", err)
+			logger.Fatal().Str("Error",err.Error()).Msg("Please check TELE_TOKEN")
 			return
+		} else {
+			logger.Info().Str("Version",appVersion).Msg("hobot running")
 		}
+
+		trafficSignal := make(map[string]map[string]int8)
+
+		trafficSignal["red"] := make(map[string]int8)
+		trafficSignal["amber"] := make(map[string]int8)
+		trafficSignal["green"] := make(map[string]int8)
+
+		trafficSignal["red"]["pin"] = 12
+		trafficSignal["amber"]["pin"] = 27
+		trafficSignal["green"]["pin"] = 22
 
 		hobot.Handle(telebot.OnText, func(m telebot.Context) error {
 
-			log.Print(m.Message().Payload, m.Text())
+		//	log.Print(m.Message().Payload, m.Text())
+			logger.Info().Str("Payload", m.Text()).Msg(m.Message().Payload)
+
 			payload := m.Message().Payload
 
+			pmetrics(context.Background(),payload)
+
 			switch payload {
-			case "hello":
-				err = m.Send(fmt.Sprintf("Hello, my name is HoBot %s!", appVersion))
+				case "hello":
+					err = m.Send(fmt.Sprintf("Hello, my name is HoBot %s!", appVersion))
+
+				case "red", "amber", "green":
+
+					if trafficSignal[payload]["on"] == 0 {
+						trafficSignal[payload]["on"] = 1
+					} else {
+						trafficSignal[payload]["on"] = 0
+					}	
+
+					err = m.Send(fmt.Sprintf("Switch %s ligth signal to %d", payload, trafficSignal[payload]["on"]))
+
+				default
+					err = m.Send("Usege: /s red|amber|green")
+
 			}
 			return err
 
 		})
+
 		hobot.Start()
 	},
 }
 
 func init() {
+	ctx := context.Background()
+	initMetrics(ctx)
 	rootCmd.AddCommand(hobotCmd)
 
 	// Here you will define your flags and configuration settings.
