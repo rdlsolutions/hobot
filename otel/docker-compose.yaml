@@ -10,7 +10,7 @@ services:
 
 # OTEL
   collector:
-    image: otel/opentelemetry-collector-contri:0.78.0
+    image: otel/opentelemetry-collector-contrib:0.78.0
     command: [--config=/etc/otel-collector-config.yaml]
     volumes:
       - ./collector/otel-collector-contrib.yaml:/etc/otel-collector-config.yaml
@@ -25,7 +25,7 @@ services:
       - --web.enable-remote-write-receiver
       - --enable-feature=exemplar-storage
     volumes:
-      - ./prometheus/prometheus.yaml
+      - ./prometheus/prometheus.yaml:/etc/prometheus.yaml
     ports:
       - "9090:9090" 
 
@@ -34,7 +34,7 @@ services:
     image: fluent/fluent-bit:latest
     volumes:
       - ./fluent-bit/docker-metadata.lua:/fluent-bit/bin/docker-metadata.lua
-      - ./fluent-bit/fluent-bit.conf:./fluent-bit/etc/fluent-bit.conf
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
       - /var:/var
       - /proc:/host/proc
       - /sys:/host/sys
@@ -56,7 +56,7 @@ services:
   grafana:
     image: grafana/grafana:9.4.3
     volumes:
-      - ./grafana/grafana-datasources.yaml:./etc/grafana/provisioning/daatasources/grafana-datasources.yaml
+      - ./grafana/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/grafana-datasources.yaml
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
