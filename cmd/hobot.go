@@ -21,15 +21,15 @@ import (
 )
 
 var (
-	TeleToken  = os.Getenv("TELE_TOKEN")
-	MetricHost = os.Getenv("METRIC_HOST")
+	TeleToken   = os.Getenv("TELE_TOKEN")
+	MetricsHost = os.Getenv("METRIC_HOST")
 )
 
 func initMetrics(ctx context.Context) {
 
 	exporter, _ := otlpmetricgrpc.New(
 		ctx,
-		otlpmetricgrpc.WithEndpoint{MetricHost},
+		otlpmetricgrpc.WithEndpoint(MetricsHost),
 		otlpmetricgrpc.WithInsecure(),
 	)
 

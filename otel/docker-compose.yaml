@@ -3,7 +3,7 @@ services:
 
 #HOBOT
   hobot:
-    image: docker.io/rdlsolutions/hobot:v1.0.9-90d99a3-amd64
+    image: ghcr.io/rdlsolutions/hobot:v1.0.9-dd3db25-amd64
     environment:
       - METRICS_HOST=collector:4317
       - TELE_TOKEN=${TELE_TOKEN}
