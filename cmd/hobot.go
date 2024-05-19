@@ -35,7 +35,7 @@ func initMetrics(ctx context.Context) {
 
 	resource := resource.NewWithAttributes(
 		semconv.SchemaURL,
-		semconv.ServiceNameKey.String(fmt.Sprintf("hobot_%", appVersion)),
+		semconv.ServiceNameKey.String(fmt.Sprintf("hobot_%s", appVersion)),
 	)
 
 	mp := sdkmetric.NewMeterProvider(

@@ -3,10 +3,10 @@ services:
 
 #HOBOT
   hobot:
-    image: docker.io/rdlsolutions/hobot:v1.0.9-dd3db25-amd64
+    image: docker.io/rdlsolutions/hobot:v1.0.9-de3cba0-amd64
     environment:
       - METRICS_HOST=collector:4317
-      - TELE_TOKEN="7192928079:AAFDm1ron-WchdMFhShUgMfSJG4w8Tj0y3Q"
+      - TELE_TOKEN=$TELE_TOKEN
 
 # OTEL
   collector:
