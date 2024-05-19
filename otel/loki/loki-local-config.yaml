@@ -2,11 +2,11 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
-  grcp_listen_port: 9096
+  grpc_listen_port: 9096
 
 common:
   instance_addr: 127.0.0.1
-  path_prefiiix: /tmp/loki
+  path_prefix: /tmp/loki
   storage:
     filesystem:
       chunks_directory: /tmp/loki/chunks
@@ -27,7 +27,7 @@ schema_config:
   configs:
     - from: 2024-05-18
       store: boltdb-shipper
-      object-store: filesystem
+      object_store: filesystem
       schema: v11
       index:
         prefix: index_

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: collector
+  name: collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: collector
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: collector
+    spec:
+      containers:
+        - args:
+            - --config=/etc/otel-collector-contrib.yaml
+          image: otel/opentelemetry-collector-contrib:0.78.0
+          name: collector
+          ports:
+            - containerPort: 4317
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/otel-collector-contrib.yaml
+              name: collector-claim0
+      restartPolicy: Always
+      volumes:
+        - name: collector-claim0
+          persistentVolumeClaim:
+            claimName: collector-claim0
+status: {}

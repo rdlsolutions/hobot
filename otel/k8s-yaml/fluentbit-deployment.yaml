@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fluentbit
+  name: fluentbit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: fluentbit
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: fluentbit
+    spec:
+      containers:
+        - image: fluent/fluent-bit:latest
+          name: fluentbit
+          ports:
+            - containerPort: 3001
+          resources: {}
+          volumeMounts:
+            - mountPath: /fluent-bit/bin/docker-metadata.lua
+              name: fluentbit-claim0
+            - mountPath: /fluent-bit/etc/fluent-bit.conf
+              name: fluentbit-claim1
+            - mountPath: /var
+              name: fluentbit-claim2
+            - mountPath: /host/proc
+              name: fluentbit-claim3
+            - mountPath: /host/sys
+              name: fluentbit-claim4
+      restartPolicy: Always
+      volumes:
+        - name: fluentbit-claim0
+          persistentVolumeClaim:
+            claimName: fluentbit-claim0
+        - name: fluentbit-claim1
+          persistentVolumeClaim:
+            claimName: fluentbit-claim1
+        - name: fluentbit-claim2
+          persistentVolumeClaim:
+            claimName: fluentbit-claim2
+        - name: fluentbit-claim3
+          persistentVolumeClaim:
+            claimName: fluentbit-claim3
+        - name: fluentbit-claim4
+          persistentVolumeClaim:
+            claimName: fluentbit-claim4
+status: {}

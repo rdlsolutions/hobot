@@ -3,17 +3,17 @@ services:
 
 #HOBOT
   hobot:
-    image: ghcr.io/rdlsolutions/hobot:v1.0.9-dd3db25-amd64
+    image: docker.io/rdlsolutions/hobot:v1.0.9-dd3db25-amd64
     environment:
       - METRICS_HOST=collector:4317
-      - TELE_TOKEN=${TELE_TOKEN}
+      - TELE_TOKEN="7192928079:AAFDm1ron-WchdMFhShUgMfSJG4w8Tj0y3Q"
 
 # OTEL
   collector:
     image: otel/opentelemetry-collector-contrib:0.78.0
-    command: [--config=/etc/otel-collector-config.yaml]
+    command: [--config=/etc/otel-collector-contrib.yaml]
     volumes:
-      - ./collector/otel-collector-contrib.yaml:/etc/otel-collector-config.yaml
+      - ./collector/otel-collector-contrib.yaml:/etc/otel-collector-contrib.yaml
     ports:
       - 4317:4317
 
@@ -45,7 +45,7 @@ services:
   loki:
     image: grafana/loki:2.8.2
     command:
-      - -config.file=/etc/loki/loki-config.yaml
+      - -config.file=/etc/loki/local-config.yaml
       - -log.level=error
     volumes:
       - ./loki/loki-local-config.yaml:/etc/loki/local-config.yaml

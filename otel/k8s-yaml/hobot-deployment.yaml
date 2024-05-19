@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: hobot
+  name: hobot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: hobot
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: hobot
+    spec:
+      containers:
+        - env:
+            - name: METRICS_HOST
+              value: collector:4317
+            - name: TELE_TOKEN
+              value: '"7192928079:AAFDm1ron-WchdMFhShUgMfSJG4w8Tj0y3Q"'
+          image: docker.io/rdlsolutions/hobot:v1.0.9-dd3db25-amd64
+          name: hobot
+          resources: {}
+      restartPolicy: Always
+status: {}
