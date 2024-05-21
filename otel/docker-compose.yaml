@@ -3,9 +3,9 @@ services:
 
 #HOBOT
   hobot:
-    image: docker.io/rdlsolutions/hobot:v1.0.9-de3cba0-amd64
+    image: docker.io/rdlsolutions/hobot:v1.0.9-0fd7226-amd64
     environment:
-      - METRICS_HOST=collector:4317
+      - METRICS_HOST=$METRICS_HOST
       - TELE_TOKEN=$TELE_TOKEN
 
 # OTEL
@@ -34,8 +34,8 @@ services:
     image: fluent/fluent-bit:latest
     volumes:
       - ./fluent-bit/docker-metadata.lua:/fluent-bit/bin/docker-metadata.lua
-      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-      - /var:/var
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf            
+      - /var:/host/var
       - /proc:/host/proc
       - /sys:/host/sys
     ports:

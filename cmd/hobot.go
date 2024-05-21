@@ -96,12 +96,9 @@ to quickly create a Cobra application.`,
 		trafficSignal["green"]["pin"] = 22
 
 		hobot.Handle(telebot.OnText, func(m telebot.Context) error {
-
-			//	log.Print(m.Message().Payload, m.Text())
 			logger.Info().Str("Payload", m.Text()).Msg(m.Message().Payload)
 
 			payload := m.Message().Payload
-
 			pmetrics(context.Background(), payload)
 
 			switch payload {
@@ -119,7 +116,7 @@ to quickly create a Cobra application.`,
 				err = m.Send(fmt.Sprintf("Switch %s ligth signal to %d", payload, trafficSignal[payload]["on"]))
 
 			default:
-				err = m.Send("Usege: /s red|amber|green")
+				err = m.Send("Usage: /s red|amber|green")
 
 			}
 			return err
