@@ -22,7 +22,7 @@ import (
 
 var (
 	TeleToken   = os.Getenv("TELE_TOKEN")
-	MetricsHost = os.Getenv("METRICS_HOST")
+	MetricsHost = "collector:4317"
 )
 
 func initMetrics(ctx context.Context) {
