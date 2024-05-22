@@ -22,7 +22,7 @@ import (
 
 var (
 	TeleToken   = os.Getenv("TELE_TOKEN")
-	MetricsHost = os.Getenv("METRIC_HOST")
+	MetricsHost = os.Getenv("METRICS_HOST")
 )
 
 func initMetrics(ctx context.Context) {
@@ -70,7 +70,6 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		logger := zerodriver.NewProductionLogger()
-		//	fmt.Printf("hobot %s started", appVersion)
 
 		hobot, err := telebot.NewBot(telebot.Settings{
 			URL:    "",
@@ -83,6 +82,7 @@ to quickly create a Cobra application.`,
 			return
 		} else {
 			logger.Info().Str("Version", appVersion).Msg("hobot running")
+
 		}
 
 		trafficSignal := make(map[string]map[string]int8)
